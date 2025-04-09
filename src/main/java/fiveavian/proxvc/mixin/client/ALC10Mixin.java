@@ -19,7 +19,7 @@ public class ALC10Mixin {
             .onMalformedInput(CodingErrorAction.REPLACE)
             .onUnmappableCharacter(CodingErrorAction.REPLACE);
 
-    @Redirect(method = "alcGetString", at = @At(value = "INVOKE", target = "Lorg/lwjgl/MemoryUtil;decodeUTF8(Ljava/nio/ByteBuffer;)Ljava/lang/String;"))
+    @Redirect(method = "alcGetString", at = @At(value = "INVOKE", target = "Lorg/lwjgl/system/MemoryUtil;memUTF8Safe(J)Ljava/lang/String;"))
     private static String decodeUTF8(ByteBuffer buffer) {
         if (buffer == null) {
             return null;

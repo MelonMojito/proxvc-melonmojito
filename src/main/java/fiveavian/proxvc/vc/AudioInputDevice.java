@@ -1,32 +1,32 @@
 package fiveavian.proxvc.vc;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.LWJGLException;
 import org.lwjgl.openal.*;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
+import java.util.Objects;
+
+import static org.lwjgl.openal.ALC10.alcOpenDevice;
 
 public class AudioInputDevice implements AutoCloseable {
     private static final int NUM_DEVICE_BUFFERS = 8;
 
     private final ByteBuffer samples = BufferUtils.createByteBuffer(VCProtocol.BUFFER_SIZE);
     private final IntBuffer ints = BufferUtils.createIntBuffer(1);
-    private ALCdevice device = null;
+    private long device = alcOpenDevice((ByteBuffer)null);
 
     public static String[] getSpecifiers() {
         String result = null;
-        try {
-            result = ALC10.alcGetString(null, ALC11.ALC_CAPTURE_DEVICE_SPECIFIER);
-        } catch (OpenALException ex) {
-            ex.printStackTrace();
-        }
+        result = ALC10.alcGetString(-1, ALC11.ALC_CAPTURE_DEVICE_SPECIFIER);
         return result == null ? new String[0] : result.split("\0");
     }
 
     public synchronized void open(String deviceName) {
         close();
-        if (deviceName == null) {
-            device = null;
+        if (Objects.equals(deviceName, "none")) {
+            device = -1;
         } else {
             device = ALC11.alcCaptureOpenDevice(
                     deviceName,
@@ -39,7 +39,7 @@ public class AudioInputDevice implements AutoCloseable {
     }
 
     public synchronized boolean isClosed() {
-        return device == null;
+        return device == -1;
     }
 
     public synchronized ByteBuffer pollSamples() {
@@ -47,7 +47,7 @@ public class AudioInputDevice implements AutoCloseable {
             return null;
         }
         ints.rewind();
-        ALC10.alcGetInteger(device, ALC11.ALC_CAPTURE_SAMPLES, ints);
+        ALC10.alcGetInteger(device, ALC11.ALC_CAPTURE_SAMPLES);
         if (ints.get(0) < VCProtocol.SAMPLE_COUNT) {
             return null;
         }

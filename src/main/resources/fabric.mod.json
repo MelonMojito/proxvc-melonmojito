@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "proxvc",
-  "version": "${mod_version}",
+  "version": "${version}",
   "name": "ProxVC",
   "description": "A primitive voice chat mod for Better Than Adventure!",
   "authors": [
@@ -15,6 +15,9 @@
     "client": [
       "fiveavian.proxvc.ProxVCClient"
     ],
+    "afterGameStart": [
+      "fiveavian.proxvc.ProxVCClient"
+    ],
     "server": [
       "fiveavian.proxvc.ProxVCServer"
     ]
@@ -24,8 +27,8 @@
   ],
   "accessWidener": "proxvc.accesswidener",
   "depends": {
-    "minecraft": "~7.2",
-    "fabricloader": ">=0.15.5",
-    "halplibe": ">=3.5.4"
+    "minecraft": "~7.3",
+    "fabricloader": ">=0.15.6-bta.7",
+    "halplibe": ">=5.1.5"
   }
 }

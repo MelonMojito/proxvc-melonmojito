@@ -4,11 +4,11 @@
   "package": "fiveavian.proxvc.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "client.ALC10Mixin",
+    "client.GameSettingsMixin",
     "client.MinecraftMixin",
     "client.NetClientHandlerMixin",
-    "client.WorldRendererMixin",
-    "client.SoundManagerMixin"
+    "client.SoundManagerMixin",
+    "client.WorldRendererMixin"
   ],
   "server": [
     "server.MinecraftServerMixin"
